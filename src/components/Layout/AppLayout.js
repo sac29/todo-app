@@ -1,17 +1,16 @@
 import React from 'react';
 import { Layout, Breadcrumb } from 'antd';
-import styles from './AppLayout';
-import  MainTabs  from '../MainTabs/MainTabs';
+import MainTabs from '../MainTabs/MainTabs';
+import styles from './AppLayout.module.css';
+
 const { Header, Footer, Content } = Layout;
 
-
 const AppLayout = () => {
-
   return (
     <Layout className="layout">
       <Header>
-        <div style={styles.header}>
-          Some 
+        <div className={styles.header}>
+          Todos Users
         </div>
       </Header>
       <Content style={{ padding: '0 50px' }}>
@@ -21,7 +20,7 @@ const AppLayout = () => {
           <Breadcrumb.Item>App</Breadcrumb.Item>
         </Breadcrumb>
         <div className="site-layout-content">
-          <MainTabs/>
+          <MainTabs />
         </div>
       </Content>
       <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>

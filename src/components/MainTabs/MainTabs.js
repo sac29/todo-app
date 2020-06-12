@@ -1,5 +1,7 @@
 import React from 'react';
 import { Tabs } from 'antd';
+import styles from './MainTabs.module.css';
+import Todos from '../Todos/Todos';
 
 const { TabPane } = Tabs;
 
@@ -9,17 +11,16 @@ function callback(key) {
 
 const MainTabs = () => {
     return (
+        <div className={styles.tabs}>
         <Tabs defaultActiveKey="1" onChange={callback}>
-            <TabPane tab="Tab 1" key="1">
-                Content of Tab Pane 1
-    </TabPane>
-            <TabPane tab="Tab 2" key="2">
+            <TabPane tab="Todos" key="1">
+                <Todos/>
+            </TabPane>
+            <TabPane tab="Users" key="2">
                 Content of Tab Pane 2
-    </TabPane>
-            <TabPane tab="Tab 3" key="3">
-                Content of Tab Pane 3
-    </TabPane>
+            </TabPane>
         </Tabs>
+        </div>
     )
 }
 
