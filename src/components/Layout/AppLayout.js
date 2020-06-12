@@ -11,7 +11,7 @@ const AppLayout = () => {
     <Layout className="layout">
       <Header>
         <div style={styles.header}>
-          Some CC
+          Some 
         </div>
       </Header>
       <Content style={{ padding: '0 50px' }}>
