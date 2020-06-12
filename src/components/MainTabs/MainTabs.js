@@ -2,6 +2,7 @@ import React from 'react';
 import { Tabs } from 'antd';
 import styles from './MainTabs.module.css';
 import Todos from '../Todos/Todos';
+import Users from '../Users/Users';
 
 const { TabPane } = Tabs;
 
@@ -17,7 +18,7 @@ const MainTabs = () => {
                 <Todos/>
             </TabPane>
             <TabPane tab="Users" key="2">
-                Content of Tab Pane 2
+                <Users/>
             </TabPane>
         </Tabs>
         </div>
