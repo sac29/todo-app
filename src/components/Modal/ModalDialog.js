@@ -29,8 +29,9 @@ const ModalDialog = (props) => {
             </Row>
             <Row>
                 <Col span={24}>
-                    <DatePicker defaultValue={moment(props.todo ? props.todo.dateAdded : new Date(), dateFormat)}
-                        onChange={onDateChange}
+                    <DatePicker defaultValue={moment(props.todo.dateAdded, dateFormat)}
+                        onChange={props.handleDateChange}
+                        placeholder="Action item date"
                         format={dateFormat} />
                 </Col>
             </Row>

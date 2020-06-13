@@ -1,19 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import moment from 'moment';
+import { createTodoItem } from '../../store/actions/todoActions';
 import { List, Button } from 'antd';
 import styles from './Todos.module.css'
 import ModalDialog from '../Modal/ModalDialog';
 
 const count = 3;
+const dateFormat = 'YYYY/MM/DD';
 
 class Todos extends React.Component {
     state = {
-        initLoading: false,
-        loading: false,
         ModalText: 'Content of the modal',
         visible: false,
         confirmLoading: false,
+        newTodo: {
+            action: null,
+            dateAdded: moment().format(dateFormat)
+        }
     };
 
     addTodo = () => {
@@ -24,7 +29,18 @@ class Todos extends React.Component {
     }
 
     handleChange = (e) => {
-        console.log(e);
+        const newTodo = { ...this.state.newTodo };
+        newTodo['action'] = e.currentTarget.value;
+        this.setState({ newTodo: newTodo });
+    }
+
+    handleDateChange = (date) => {
+        debugger;
+        if (date) {
+            const newTodo = { ...this.state.newTodo };
+            newTodo['dateAdded'] = date.format(dateFormat);
+            this.setState({ newTodo: newTodo });
+        }
     }
 
     handleSave = () => {
@@ -33,9 +49,15 @@ class Todos extends React.Component {
             confirmLoading: true,
         });
         setTimeout(() => {
+            this.props.createTodoItem(this.state.newTodo);
+            const newTodo = {
+                action: null,
+                dateAdded: moment().format(dateFormat)
+            }
             this.setState({
                 visible: false,
                 confirmLoading: false,
+                newTodo: newTodo
             });
         }, 2000);
     };
@@ -47,8 +69,10 @@ class Todos extends React.Component {
         });
     };
 
+
+
     render() {
-        const { initLoading, loading, list } = this.state;
+        const { initLoading } = this.state;
         const { visible, confirmLoading, ModalText } = this.state
 
         return (
@@ -59,7 +83,8 @@ class Todos extends React.Component {
                     handleOk={this.handleSave}
                     confirmLoading={confirmLoading}
                     visible={visible} title={ModalText}
-                    handleChange={this.handleChange} todo={this.props.todos[0]} />
+                    handleDateChange={this.handleDateChange}
+                    handleChange={this.handleChange} todo={this.state.newTodo} />
                 <List
                     className="demo-loadmore-list"
                     header={<div className={styles.container}>
@@ -98,4 +123,4 @@ const mapStateToProps = state => ({
     todos: state.todos.todos
 })
 
-export default connect(mapStateToProps)(Todos) ;
+export default connect(mapStateToProps, { createTodoItem })(Todos);
