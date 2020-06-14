@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { List, Button } from 'antd';
-import { createTodoItem, markTodoAsDone, editTodo } from '../../store/actions/todoActions';
+import { createTodoItem, markTodoAsDone, editTodo, deleteTodo } from '../../store/actions/todoActions';
 import styles from './Todos.module.css'
 import ModalDialog from '../Modal/ModalDialog';
 
@@ -44,6 +44,11 @@ class Todos extends React.Component {
             newTodo: todo,
             isEdit: true
         });
+    }
+
+    deleteTodo = (todo) => {
+        const todos = this.props.todos.filter(t => t.id !== todo.id);
+        this.props.deleteTodo(todos);
     }
 
     handleChange = (e) => {
@@ -142,7 +147,8 @@ class Todos extends React.Component {
                         <List.Item key={key}
                             actions={
                                 [<a key="list-loadmore-edit" onClick={() => this.editTodo(item)}>Edit</a>,
-                                <a key="list-loadmore-edit" onClick={() => this.markAsDone(item)}>{item.isCompleted ? 'Mark Incomplete' : 'Mark Complete'}</a>]}>
+                                <a key="list-loadmore-edit" onClick={() => this.markAsDone(item)}>{item.isCompleted ? 'Mark Incomplete' : 'Mark Complete'}</a>,
+                                <a key="list-loadmore-edit" onClick={() => this.deleteTodo(item)}>Delete</a>]}>
                             <div className={styles.container + " " + (item.isCompleted ? styles.completed : '')}>
                                 <div>{item.id}</div>
                                 <div>{item.action}</div>
@@ -165,4 +171,4 @@ const mapStateToProps = state => ({
     todos: state.todos.todos
 });
 
-export default connect(mapStateToProps, { createTodoItem, markTodoAsDone, editTodo })(Todos);
+export default connect(mapStateToProps, { createTodoItem, markTodoAsDone, editTodo, deleteTodo })(Todos);

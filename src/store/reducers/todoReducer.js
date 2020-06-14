@@ -22,7 +22,7 @@ const reducer = (state = initialState, action) => {
             }
         case DELETE_TODO_ITEM:
             return {
-
+                todos: [...action.payload]
             }
         default:
             return state;
