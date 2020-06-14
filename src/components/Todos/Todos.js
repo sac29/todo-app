@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { createTodoItem, markTodoAsDone } from '../../store/actions/todoActions';
 import { List, Button } from 'antd';
+import { createTodoItem, markTodoAsDone, editTodo } from '../../store/actions/todoActions';
 import styles from './Todos.module.css'
 import ModalDialog from '../Modal/ModalDialog';
 
@@ -15,6 +15,7 @@ class Todos extends React.Component {
         ModalText: 'Content of the modal',
         visible: false,
         confirmLoading: false,
+        isEdit: false,
         newTodo: {
             action: null,
             dateAdded: moment().format(dateFormat),
@@ -25,8 +26,23 @@ class Todos extends React.Component {
 
     addTodo = () => {
         this.setState({
-            ModalText: 'Add a new todo',
+            ModalText: 'Add Todo',
             visible: true,
+            newTodo: {
+                action: null,
+                dateAdded: moment().format(dateFormat),
+                isCompleted: false,
+                id: null
+            }
+        });
+    }
+
+    editTodo = (todo) => {
+        this.setState({
+            ModalText: 'Edit Todo',
+            visible: true,
+            newTodo: todo,
+            isEdit: true
         });
     }
 
@@ -38,22 +54,30 @@ class Todos extends React.Component {
 
     handleDateChange = (date) => {
         debugger;
+        const newTodo = { ...this.state.newTodo };
         if (date) {
-            const newTodo = { ...this.state.newTodo };
             newTodo['dateAdded'] = date.format(dateFormat);
-            this.setState({ newTodo: newTodo });
+        } else {
+            newTodo['dateAdded'] = null;
         }
+        this.setState({ newTodo: newTodo });
     }
 
     handleSave = () => {
         this.setState({
-            ModalText: 'The modal will be closed after two seconds',
+            ModalText: 'Saving...',
             confirmLoading: true,
         });
         setTimeout(() => {
-            const newTodo = { ...this.state.newTodo };
-            newTodo['id'] = this.props.todos.length + 1;
-            this.props.createTodoItem(newTodo);
+            if (this.state.isEdit) {
+                const updatedItem = { ...this.state.newTodo }
+                const todos = this.props.todos.map((todo) => { return todo.id === updatedItem.id ? { ...updatedItem } : todo });
+                this.props.editTodo(todos);
+            } else {
+                const newTodo = { ...this.state.newTodo };
+                newTodo['id'] = this.props.todos.length + 1;
+                this.props.createTodoItem(newTodo);
+            }
             const todo = {
                 action: null,
                 dateAdded: moment().format(dateFormat),
@@ -63,14 +87,15 @@ class Todos extends React.Component {
             this.setState({
                 visible: false,
                 confirmLoading: false,
-                newTodo: todo
+                newTodo: todo,
+                isEdit: false
             });
         }, 2000);
     };
 
     markAsDone = (todo) => {
         const updatedItem = { ...todo, isCompleted: !todo.isCompleted }
-        const todos = this.props.todos.map((todo, i) => { return todo.id === updatedItem.id ? { ...updatedItem } : todo });
+        const todos = this.props.todos.map((todo) => { return todo.id === updatedItem.id ? { ...updatedItem } : todo });
         this.props.markTodoAsDone([...todos]);
     };
 
@@ -114,8 +139,11 @@ class Todos extends React.Component {
                     }}
                     dataSource={this.props.todos}
                     renderItem={(item, key) => (
-                        <List.Item key={key} actions={[<a key="list-loadmore-edit" onClick={() => this.markAsDone(item)}>Done</a>]}>
-                            <div className={styles.container}>
+                        <List.Item key={key}
+                            actions={
+                                [<a key="list-loadmore-edit" onClick={() => this.editTodo(item)}>Edit</a>,
+                                <a key="list-loadmore-edit" onClick={() => this.markAsDone(item)}>{item.isCompleted ? 'Mark Incomplete' : 'Mark Complete'}</a>]}>
+                            <div className={styles.container + " " + (item.isCompleted ? styles.completed : '')}>
                                 <div>{item.id}</div>
                                 <div>{item.action}</div>
                                 <div>{item.dateAdded}</div>
@@ -137,4 +165,4 @@ const mapStateToProps = state => ({
     todos: state.todos.todos
 });
 
-export default connect(mapStateToProps, { createTodoItem, markTodoAsDone })(Todos);
+export default connect(mapStateToProps, { createTodoItem, markTodoAsDone, editTodo })(Todos);

@@ -1,4 +1,4 @@
-import { ADD_TODO_ITEM, MARK_TODO_DONE, DELETE_TODO_ITEM } from './actions';
+import { ADD_TODO_ITEM, MARK_TODO_DONE, DELETE_TODO_ITEM, EDIT_TODO_ITEM } from './actions';
 
 export const createTodoItem = (todo) => dispatch => {
     dispatch({
@@ -11,6 +11,13 @@ export const createTodoItem = (todo) => dispatch => {
 export const markTodoAsDone = (todos) => dispatch => {
     dispatch({
         type: MARK_TODO_DONE,
+        payload: todos
+    });
+};
+
+export const editTodo = (todos) => dispatch => {
+    dispatch({
+        type: EDIT_TODO_ITEM,
         payload: todos
     });
 };

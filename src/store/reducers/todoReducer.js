@@ -1,4 +1,4 @@
-import { ADD_TODO_ITEM, DELETE_TODO_ITEM, MARK_TODO_DONE } from '../actions/actions';
+import { ADD_TODO_ITEM, DELETE_TODO_ITEM, MARK_TODO_DONE, EDIT_TODO_ITEM } from '../actions/actions';
 
 const initialState = {
     todos: [
@@ -13,6 +13,10 @@ const reducer = (state = initialState, action) => {
                 todos: [...state.todos, action.payload]
             }
         case MARK_TODO_DONE:
+            return {
+                todos: [...action.payload]
+            }
+        case EDIT_TODO_ITEM:
             return {
                 todos: [...action.payload]
             }
