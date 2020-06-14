@@ -1,8 +1,8 @@
-import { ADD_TODO_ITEM, DELETE_TODO_ITEM } from '../actions/actions';
+import { ADD_TODO_ITEM, DELETE_TODO_ITEM, MARK_TODO_DONE } from '../actions/actions';
 
 const initialState = {
     todos: [
-        { action: 'Medidate for 445 mins', dateAdded: '2020/06/12' }
+        { id: 1, action: 'Medidate for 445 mins', dateAdded: '2020/06/12', isCompleted: false }
     ]
 };
 
@@ -11,6 +11,10 @@ const reducer = (state = initialState, action) => {
         case ADD_TODO_ITEM:
             return {
                 todos: [...state.todos, action.payload]
+            }
+        case MARK_TODO_DONE:
+            return {
+                todos: [...action.payload]
             }
         case DELETE_TODO_ITEM:
             return {

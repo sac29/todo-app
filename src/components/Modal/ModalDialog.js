@@ -9,10 +9,6 @@ const dateFormat = 'YYYY/MM/DD';
 
 const ModalDialog = (props) => {
 
-    const onDateChange = (date, dateString) => {
-        console.log(date);
-    }
-
     return (
         <Modal
             title={props.title}
@@ -21,32 +17,39 @@ const ModalDialog = (props) => {
             confirmLoading={props.confirmLoading}
             okText="Save"
             onCancel={props.handleCancel}>
-
-            <Row>
-                <Col span={24}>
-                    <Input placeholder="Action" onChange={props.handleChange} value={props.todo.action} />
-                </Col>
-            </Row>
-            <Row>
-                <Col span={24}>
-                    <DatePicker defaultValue={moment(props.todo.dateAdded, dateFormat)}
-                        onChange={props.handleDateChange}
-                        placeholder="Action item date"
-                        format={dateFormat} />
-                </Col>
-            </Row>
-            {/* <Row>
-                <Col span={24}>
-                    <Input name="name" placeholder="Name"
-                        value={props.user.email} onChange={props.handleChange} />
-                </Col>
-            </Row>
-            <Row>
-                <Col span={24}>
-                    <Input placeholder="Email" name="email"
-                        value={props.user.email} onChange={props.handleChange} />
-                </Col>
-            </Row> */}
+            {props.todo && (
+                <div>
+                    <Row>
+                        <Col span={24}>
+                            <Input placeholder="Action" onChange={props.handleChange} value={props.todo.action} />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={24}>
+                            <DatePicker defaultValue={moment(props.todo.dateAdded, dateFormat)}
+                                onChange={props.handleDateChange}
+                                placeholder="Action item date"
+                                format={dateFormat} />
+                        </Col>
+                    </Row>
+                </div>
+            )}
+            {props.user && (
+                <div>
+                    <Row>
+                        <Col span={24}>
+                            <Input name="name" placeholder="Name"
+                                value={props.user.name} onChange={props.handleChange} />
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col span={24}>
+                            <Input placeholder="Email" name="email"
+                                value={props.user.email} onChange={props.handleChange} />
+                        </Col>
+                    </Row>
+                </div>
+            )}
 
 
         </Modal>

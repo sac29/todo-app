@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import { createTodoItem } from '../../store/actions/todoActions';
+import { createTodoItem, markTodoAsDone } from '../../store/actions/todoActions';
 import { List, Button } from 'antd';
 import styles from './Todos.module.css'
 import ModalDialog from '../Modal/ModalDialog';
@@ -17,7 +17,9 @@ class Todos extends React.Component {
         confirmLoading: false,
         newTodo: {
             action: null,
-            dateAdded: moment().format(dateFormat)
+            dateAdded: moment().format(dateFormat),
+            isCompleted: false,
+            id: null
         }
     };
 
@@ -49,17 +51,27 @@ class Todos extends React.Component {
             confirmLoading: true,
         });
         setTimeout(() => {
-            this.props.createTodoItem(this.state.newTodo);
-            const newTodo = {
+            const newTodo = { ...this.state.newTodo };
+            newTodo['id'] = this.props.todos.length + 1;
+            this.props.createTodoItem(newTodo);
+            const todo = {
                 action: null,
-                dateAdded: moment().format(dateFormat)
+                dateAdded: moment().format(dateFormat),
+                isCompleted: false,
+                id: null
             }
             this.setState({
                 visible: false,
                 confirmLoading: false,
-                newTodo: newTodo
+                newTodo: todo
             });
         }, 2000);
+    };
+
+    markAsDone = (todo) => {
+        const updatedItem = { ...todo, isCompleted: !todo.isCompleted }
+        const todos = this.props.todos.map((todo, i) => { return todo.id === updatedItem.id ? { ...updatedItem } : todo });
+        this.props.markTodoAsDone([...todos]);
     };
 
     handleCancel = () => {
@@ -101,11 +113,13 @@ class Todos extends React.Component {
                         pageSize: 2,
                     }}
                     dataSource={this.props.todos}
-                    renderItem={item => (
-                        <List.Item actions={[<a key="list-loadmore-edit">Done</a>]}>
+                    renderItem={(item, key) => (
+                        <List.Item key={key} actions={[<a key="list-loadmore-edit" onClick={() => this.markAsDone(item)}>Done</a>]}>
                             <div className={styles.container}>
+                                <div>{item.id}</div>
                                 <div>{item.action}</div>
                                 <div>{item.dateAdded}</div>
+                                <div>{item.isCompleted.toString()}</div>
                             </div>
                         </List.Item>
                     )}
@@ -121,6 +135,6 @@ Todos.propTypes = {
 
 const mapStateToProps = state => ({
     todos: state.todos.todos
-})
+});
 
-export default connect(mapStateToProps, { createTodoItem })(Todos);
+export default connect(mapStateToProps, { createTodoItem, markTodoAsDone })(Todos);
