@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { List, Button } from 'antd';
-import { createNewUser } from '../../store/actions/userActions';
+import { createNewUser, editUser, deleteUser } from '../../store/actions/userActions';
 import ModalDialog from '../Modal/ModalDialog';
 import styles from './Users.module.css'
 
@@ -12,9 +12,11 @@ class Users extends React.Component {
         ModalText: 'Content of the modal',
         visible: false,
         confirmLoading: false,
+        isEdit: false,
         newUser: {
             name: null,
-            email: null
+            email: null,
+            id: null
         }
     };
 
@@ -23,7 +25,21 @@ class Users extends React.Component {
             ModalText: 'Add a new user',
             visible: true,
         });
-    }
+    };
+
+    editUser = (user) => {
+        this.setState({
+            ModalText: 'Edit Todo',
+            visible: true,
+            newUser: user,
+            isEdit: true
+        });
+    };
+
+    deleteUser = (user) => {
+        const users = this.props.users.filter(u => u.id !== user.id);
+        this.props.deleteUser(users);
+    };
 
     handleChange = (e) => {
         const newUser = { ...this.state.newUser };
@@ -33,14 +49,24 @@ class Users extends React.Component {
 
     handleSave = () => {
         this.setState({
-            ModalText: 'The modal will be closed after two seconds',
+            ModalText: 'Saving...',
             confirmLoading: true,
         });
         setTimeout(() => {
-            this.props.createNewUser(this.state.newUser);
+            debugger;
+            if (this.state.isEdit) {
+                const updatedUser = { ...this.state.newUser }
+                const users = this.props.users.map((user) => { return user.id === updatedUser.id ? { ...updatedUser } : user });
+                this.props.editUser(users);
+            } else {
+                const newUser = { ...this.state.newUser };
+                newUser['id'] = this.props.users.length + 1;
+                this.props.createNewUser(newUser);
+            }
             const newUser = {
                 name: null,
-                email: null
+                email: null,
+                id: null
             }
             this.setState({
                 visible: false,
@@ -86,7 +112,9 @@ class Users extends React.Component {
                     }}
                     dataSource={this.props.users}
                     renderItem={item => (
-                        <List.Item actions={[<a key="list-loadmore-edit">Done</a>]}>
+                        <List.Item actions={
+                            [<a key="edit-user" onClick={() => this.editUser(item)}>Edit</a>,
+                            <a key="delete-user" onClick={() => this.deleteUser(item)}>Delete</a>]}>
                             <div className={styles.container}>
                                 <div>{item.name}</div>
                                 <div>{item.email}</div>
@@ -107,4 +135,4 @@ const mapStateToProps = state => ({
     users: state.users.users
 });
 
-export default connect(mapStateToProps, { createNewUser })(Users);
+export default connect(mapStateToProps, { createNewUser, editUser, deleteUser })(Users);

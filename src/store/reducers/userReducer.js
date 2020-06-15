@@ -1,8 +1,8 @@
-import { ADD_USER, DELETE_USER } from '../actions/actions';
+import { ADD_USER, DELETE_USER, EDIT_USER } from '../actions/actions';
 
 const initialState = {
     users: [
-        { name: 'Deepak Singh', email: 'deepak@gmail.com' }
+        { id: 1, name: 'Deepak Singh', email: 'deepak@gmail.com' }
     ]
 };
 
@@ -12,9 +12,13 @@ const reducer = (state = initialState, action) => {
             return {
                 users: [...state.users, action.payload]
             }
+        case EDIT_USER:
+            return {
+                users: [...action.payload]
+            }
         case DELETE_USER:
             return {
-
+                users: [...action.payload]
             }
         default:
             return state;
