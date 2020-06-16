@@ -2,7 +2,9 @@ import { ADD_TODO_ITEM, DELETE_TODO_ITEM, MARK_TODO_DONE, EDIT_TODO_ITEM } from 
 
 const initialState = {
     todos: [
-        { id: 1, action: 'Medidate for 445 mins', dateAdded: '2020/06/12', isCompleted: false }
+        { id: 1, action: 'Medidate for 15 mins', dateAdded: '2020/06/12', isCompleted: false },
+        { id: 2, action: 'Read newspaper', dateAdded: '2020/06/16', isCompleted: false },
+        { id: 3, action: 'Prepare coffee', dateAdded: '2020/06/15', isCompleted: false }
     ]
 };
 

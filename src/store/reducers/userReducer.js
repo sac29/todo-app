@@ -2,7 +2,8 @@ import { ADD_USER, DELETE_USER, EDIT_USER } from '../actions/actions';
 
 const initialState = {
     users: [
-        { id: 1, name: 'Deepak Singh', email: 'deepak@gmail.com' }
+        { id: 1, name: 'Deepak Singh', email: 'deepak@gmail.com' },
+        { id: 2, name: 'Sandeep Ojha', email: 'sandeep@gmail.com' }
     ]
 };
 

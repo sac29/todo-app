@@ -115,7 +115,7 @@ class Users extends React.Component {
                     header={<div className={styles.container + " " + styles.heading}>
                         <div>Name</div>
                         <div>Email</div>
-                        <div>Action</div>
+                        <div>Operation</div>
                     </div>}
                     loading={initLoading}
                     itemLayout="horizontal"

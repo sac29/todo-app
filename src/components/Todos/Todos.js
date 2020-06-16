@@ -131,7 +131,7 @@ class Todos extends React.Component {
                     header={<div className={styles.container + " "+ styles.heading}>
                         <div>Action    </div>
                         <div className={styles.dateadded}>Date Added</div>
-                        <div>Operation </div>
+                        <div>Operation</div>
                     </div>}
                     loading={initLoading}
                     itemLayout="horizontal"
