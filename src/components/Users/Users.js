@@ -5,7 +5,7 @@ import { List, Button } from 'antd';
 import { createNewUser, editUser, deleteUser } from '../../store/actions/userActions';
 import ModalDialog from '../Modal/ModalDialog';
 import styles from './Users.module.css';
-
+import { validateFields } from '../../utility/utility';
 
 class Users extends React.Component {
     state = {
@@ -13,6 +13,7 @@ class Users extends React.Component {
         visible: false,
         confirmLoading: false,
         isEdit: false,
+        emailError: null,
         newUser: {
             name: null,
             email: null,
@@ -46,8 +47,10 @@ class Users extends React.Component {
 
     handleChange = (e) => {
         const newUser = { ...this.state.newUser };
-        newUser[e.currentTarget.name] = e.currentTarget.value;
-        this.setState({ newUser: newUser });
+        const { name, value } = e.currentTarget;
+        newUser[name] = value;
+        const emailError = validateFields(name, value);
+        this.setState({ newUser: newUser, emailError: emailError });
     }
 
     handleSave = () => {
@@ -105,6 +108,7 @@ class Users extends React.Component {
                     handleOk={this.handleSave}
                     confirmLoading={confirmLoading}
                     visible={visible} title={ModalText}
+                    emailError={this.state.emailError}
                     handleChange={this.handleChange} user={this.state.newUser} />
                 <List
                     className="demo-loadmore-list"
@@ -119,7 +123,7 @@ class Users extends React.Component {
                         onChange: page => {
                             console.log(page);
                         },
-                        pageSize: 2,
+                        pageSize: 5,
                     }}
                     dataSource={this.props.users}
                     renderItem={item => (

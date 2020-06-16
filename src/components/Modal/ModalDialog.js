@@ -54,6 +54,9 @@ const ModalDialog = (props) => {
                             <label>Email</label>
                             <Input placeholder="Email" name="email"
                                 value={props.user.email} onChange={props.handleChange} />
+                            {props.emailError && (
+                                <span className={styles.error}>{props.emailError}</span>
+                            )}
                         </Col>
                     </Row>
                 </div>

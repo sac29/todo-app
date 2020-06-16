@@ -3,12 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { List, Button } from 'antd';
-import { Row, Col } from 'antd';
 import { createTodoItem, markTodoAsDone, editTodo, deleteTodo } from '../../store/actions/todoActions';
 import styles from './Todos.module.css';
 import ModalDialog from '../Modal/ModalDialog';
 
-const count = 3;
 const dateFormat = 'YYYY/MM/DD';
 
 class Todos extends React.Component {
@@ -141,13 +139,13 @@ class Todos extends React.Component {
                         onChange: page => {
                             console.log(page);
                         },
-                        pageSize: 2,
+                        pageSize: 5,
                     }}
                     dataSource={this.props.todos}
                     renderItem={(item, key) => (
                         <div className={styles.container}>
                             <List.Item key={key}>
-                                <div>{item.action} </div>
+                                <div className={item.isCompleted ? styles.completed : ''}>{item.action} </div>
                             </List.Item>
                             <List.Item>
                                 <div>{item.dateAdded}</div>
