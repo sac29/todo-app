@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import { List, Button } from 'antd';
+import { Row, Col } from 'antd';
 import { createTodoItem, markTodoAsDone, editTodo, deleteTodo } from '../../store/actions/todoActions';
-import styles from './Todos.module.css'
+import styles from './Todos.module.css';
 import ModalDialog from '../Modal/ModalDialog';
 
 const count = 3;
@@ -129,9 +130,9 @@ class Todos extends React.Component {
                     handleChange={this.handleChange} todo={this.state.newTodo} />
                 <List
                     className="demo-loadmore-list"
-                    header={<div className={styles.container}>
+                    header={<div className={styles.container + " "+ styles.heading}>
                         <div>Action    </div>
-                        <div>Date Added</div>
+                        <div className={styles.dateadded}>Date Added</div>
                         <div>Operation </div>
                     </div>}
                     loading={initLoading}
@@ -144,18 +145,29 @@ class Todos extends React.Component {
                     }}
                     dataSource={this.props.todos}
                     renderItem={(item, key) => (
-                        <List.Item key={key}
-                            actions={
-                                [<a key="list-loadmore-edit" onClick={() => this.editTodo(item)}>Edit</a>,
-                                <a key="list-loadmore-edit" onClick={() => this.markAsDone(item)}>{item.isCompleted ? 'Mark Incomplete' : 'Mark Complete'}</a>,
-                                <a key="list-loadmore-edit" onClick={() => this.deleteTodo(item)}>Delete</a>]}>
-                            <div className={styles.container + " " + (item.isCompleted ? styles.completed : '')}>
-                                <div>{item.id}</div>
-                                <div>{item.action}</div>
+                        <div className={styles.container}>
+                            <List.Item key={key}>
+                                <div>{item.action} </div>
+                            </List.Item>
+                            <List.Item>
                                 <div>{item.dateAdded}</div>
-                                <div>{item.isCompleted.toString()}</div>
-                            </div>
-                        </List.Item>
+                            </List.Item>
+                            <List.Item>
+                                <div className={styles.container}>
+                                    <div>
+                                        <a onClick={() => this.editTodo(item)}>Edit</a>
+                                    </div>
+                                    <div className={styles.actions}> | </div>
+                                    <div>
+                                        <a onClick={() => this.markAsDone(item)}>{item.isCompleted ? 'Mark Incomplete' : 'Mark Complete'}</a>
+                                    </div>
+                                    <div className={styles.actions}> | </div>
+                                    <div>
+                                        <a onClick={() => this.deleteTodo(item)}>Delete</a>
+                                    </div>
+                                </div>
+                            </List.Item>
+                        </div>
                     )}
                 />
             </>

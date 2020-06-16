@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { List, Button } from 'antd';
 import { createNewUser, editUser, deleteUser } from '../../store/actions/userActions';
 import ModalDialog from '../Modal/ModalDialog';
-import styles from './Users.module.css'
+import styles from './Users.module.css';
 
 
 class Users extends React.Component {
@@ -21,13 +21,16 @@ class Users extends React.Component {
     };
 
     addUser = () => {
+        debugger;
         this.setState({
             ModalText: 'Add a new user',
             visible: true,
+            isEdit: false,
         });
     };
 
     editUser = (user) => {
+        debugger
         this.setState({
             ModalText: 'Edit Todo',
             visible: true,
@@ -71,15 +74,22 @@ class Users extends React.Component {
             this.setState({
                 visible: false,
                 confirmLoading: false,
-                newUser: newUser
+                newUser: newUser,
+                isEdit: false
             });
         }, 2000);
     };
 
     handleCancel = () => {
-        console.log('Clicked cancel button');
+        const newUser = {
+            name: null,
+            email: null,
+            id: null
+        }
         this.setState({
             visible: false,
+            isEdit: false,
+            newUser: newUser
         });
     };
 
@@ -98,9 +108,10 @@ class Users extends React.Component {
                     handleChange={this.handleChange} user={this.state.newUser} />
                 <List
                     className="demo-loadmore-list"
-                    header={<div className={styles.container}>
+                    header={<div className={styles.container + " " + styles.heading}>
                         <div>Name</div>
                         <div>Email</div>
+                        <div>Action</div>
                     </div>}
                     loading={initLoading}
                     itemLayout="horizontal"
@@ -112,14 +123,26 @@ class Users extends React.Component {
                     }}
                     dataSource={this.props.users}
                     renderItem={item => (
-                        <List.Item actions={
-                            [<a key="edit-user" onClick={() => this.editUser(item)}>Edit</a>,
-                            <a key="delete-user" onClick={() => this.deleteUser(item)}>Delete</a>]}>
-                            <div className={styles.container}>
+                        <div className={styles.container}>
+                            <List.Item>
                                 <div>{item.name}</div>
+                            </List.Item>
+                            <List.Item>
                                 <div>{item.email}</div>
-                            </div>
-                        </List.Item>
+                            </List.Item>
+                            <List.Item>
+
+                                <div className={styles.container}>
+                                    <div>
+                                        <a onClick={() => this.editUser(item)}>Edit</a>
+                                    </div>
+                                    <div className={styles.actions}> | </div>
+                                    <div>
+                                        <a onClick={() => this.deleteUser(item)}>Delete</a>
+                                    </div>
+                                </div>
+                            </List.Item>
+                        </div>
                     )}
                 />
             </>

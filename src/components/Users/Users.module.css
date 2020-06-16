@@ -1,4 +1,17 @@
 .container {
     display: flex;
     justify-content: space-between;
-  }
+}
+
+.actions {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.dateadded {
+  padding-right: 20px;
+}
+
+.heading {
+  font-weight: 600;
+}

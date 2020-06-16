@@ -1,9 +1,7 @@
 import React from 'react';
-import { Modal, Button } from 'antd';
-import { Row, Col } from 'antd';
-import { Input } from 'antd';
-import { DatePicker } from 'antd';
+import { Modal, Row, Col, Input, DatePicker } from 'antd';
 import moment from 'moment';
+import styles from './ModalDialog.module.css';
 
 const dateFormat = 'YYYY/MM/DD';
 
@@ -19,32 +17,41 @@ const ModalDialog = (props) => {
             onCancel={props.handleCancel}>
             {props.todo && (
                 <div>
-                    <Row>
+                    <Row className={styles.paddingb}>
                         <Col span={24}>
+                            <label>Action</label>
                             <Input placeholder="Action" onChange={props.handleChange} value={props.todo.action} />
                         </Col>
                     </Row>
                     <Row>
                         <Col span={24}>
-                            <DatePicker defaultPickerValue={moment(new Date(), dateFormat)}
-                                onChange={props.handleDateChange}
-                                placeholder="Action item date"
-                                value={props.todo.dateAdded ? moment(props.todo.dateAdded, dateFormat) : ''}
-                                format={dateFormat} />
+                            <div>
+                                <label>Date Added</label>
+                            </div>
+                            <div>
+                                <DatePicker defaultPickerValue={moment(new Date(), dateFormat)}
+                                    onChange={props.handleDateChange}
+                                    placeholder="Action item date"
+                                    value={props.todo.dateAdded ? moment(props.todo.dateAdded, dateFormat) : ''}
+                                    format={dateFormat} />
+
+                            </div>
                         </Col>
                     </Row>
                 </div>
             )}
             {props.user && (
                 <div>
-                    <Row>
+                    <Row className={styles.paddingb}>
                         <Col span={24}>
+                            <label>Name</label>
                             <Input name="name" placeholder="Name"
                                 value={props.user.name} onChange={props.handleChange} />
                         </Col>
                     </Row>
                     <Row>
                         <Col span={24}>
+                            <label>Email</label>
                             <Input placeholder="Email" name="email"
                                 value={props.user.email} onChange={props.handleChange} />
                         </Col>

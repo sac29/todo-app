@@ -6,3 +6,16 @@
 .completed {
   color: red;
 }
+
+.actions {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.dateadded {
+  padding-right: 40px;
+}
+
+.heading {
+  font-weight: 600;
+}
