@@ -118,7 +118,7 @@ class Todos extends React.Component {
 
         return (
             <>
-                <Button onClick={this.addTodo} type="primary">Add New</Button>
+                <Button onClick={this.addTodo} type="primary">Add Todo</Button>
                 <ModalDialog
                     handleCancel={this.handleCancel}
                     handleOk={this.handleSave}

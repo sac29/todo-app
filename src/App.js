@@ -1,6 +1,5 @@
 import React from 'react';
-import AppLayout from './components/Layout/AppLayout'
-import logo from './logo.svg';
+import AppLayout from './components/Layout/AppLayout';
 import './App.css';
 import 'antd/dist/antd.css';
 
